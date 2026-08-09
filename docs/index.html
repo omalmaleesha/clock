@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Digital Clock</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="trailCanvas"></canvas>
+
+  <div class="clock-wrapper">
+    <div class="am-pm" id="ampm">AM</div>
+    <div class="clock">
+      <div class="digit" id="h1"></div>
+      <div class="digit" id="h2"></div>
+      <div class="colon">
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="digit" id="m1"></div>
+      <div class="digit" id="m2"></div>
+    </div>
+  </div>
+
+  <button id="landscapeBtn" class="landscape-btn" title="Toggle landscape mode">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="5" width="20" height="14" rx="2"/>
+      <path d="M8 19v2M16 19v2"/>
+    </svg>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>
