@@ -1,0 +1,196 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  touch-action: none;
+}
+
+#trailCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.clock-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15em;
+}
+
+.am-pm {
+  color: #c8c8c8;
+  font-size: clamp(14px, 3.5vw, 28px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-left: 0.15em;
+  opacity: 0.9;
+  text-shadow: 0 0 8px rgba(200, 200, 200, 0.35);
+}
+
+.clock {
+  display: flex;
+  align-items: center;
+  gap: 0.18em;
+  --digit-w: clamp(42px, 14vw, 110px);
+  --digit-h: calc(var(--digit-w) * 1.7);
+  --seg: calc(var(--digit-w) * 0.18);
+  --gap: calc(var(--digit-w) * 0.06);
+}
+
+/* ========== 7-SEGMENT DIGIT ========== */
+.digit {
+  position: relative;
+  width: var(--digit-w);
+  height: var(--digit-h);
+}
+
+.digit .seg {
+  position: absolute;
+  background: #d4d4d4;
+  border-radius: 2px;
+  opacity: 0.12;
+  transition: opacity 0.15s;
+  box-shadow: 0 0 6px rgba(200, 200, 200, 0.15);
+}
+
+.digit .seg.on {
+  opacity: 1;
+  box-shadow:
+    0 0 4px rgba(255, 255, 255, 0.5),
+    0 0 12px rgba(220, 220, 220, 0.35);
+}
+
+/* Horizontal segments (a, g, d) */
+.seg.a, .seg.g, .seg.d {
+  height: var(--seg);
+  width: calc(100% - var(--seg) * 1.4);
+  left: calc(var(--seg) * 0.7);
+}
+
+.seg.a { top: 0; }
+.seg.g { top: 50%; transform: translateY(-50%); }
+.seg.d { bottom: 0; }
+
+/* Vertical segments */
+.seg.b, .seg.c, .seg.e, .seg.f {
+  width: var(--seg);
+  height: calc(50% - var(--seg) * 0.85);
+}
+
+.seg.b {
+  top: calc(var(--seg) * 0.55);
+  right: 0;
+}
+
+.seg.c {
+  bottom: calc(var(--seg) * 0.55);
+  right: 0;
+}
+
+.seg.e {
+  bottom: calc(var(--seg) * 0.55);
+  left: 0;
+}
+
+.seg.f {
+  top: calc(var(--seg) * 0.55);
+  left: 0;
+}
+
+/* Slight bevel for realistic 7-segment look */
+.seg.a, .seg.g, .seg.d {
+  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+}
+
+.seg.b, .seg.c, .seg.e, .seg.f {
+  clip-path: polygon(50% 0%, 100% 8%, 100% 92%, 50% 100%, 0% 92%, 0% 8%);
+}
+
+/* ========== COLON ========== */
+.colon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--digit-h) * 0.22);
+  width: calc(var(--digit-w) * 0.35);
+  height: var(--digit-h);
+  padding-bottom: 2px;
+}
+
+.colon .dot {
+  width: calc(var(--digit-w) * 0.18);
+  height: calc(var(--digit-w) * 0.18);
+  background: #d4d4d4;
+  border-radius: 50%;
+  box-shadow:
+    0 0 4px rgba(255, 255, 255, 0.5),
+    0 0 10px rgba(220, 220, 220, 0.3);
+}
+
+/* ========== Landscape button ========== */
+.landscape-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(30, 30, 30, 0.85);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 200;
+  transition: background 0.2s, transform 0.15s;
+  backdrop-filter: blur(6px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.landscape-btn:hover,
+.landscape-btn:active {
+  background: rgba(60, 60, 60, 0.95);
+  transform: scale(1.05);
+}
+
+.landscape-btn svg {
+  pointer-events: none;
+}
+
+body.landscape-mode .landscape-btn {
+  opacity: 0.6;
+}
+
+/* Mobile landscape sizing */
+@media (orientation: landscape) and (max-height: 500px) {
+  .clock {
+    --digit-w: clamp(50px, 16vh, 100px);
+  }
+  .am-pm {
+    font-size: clamp(12px, 4vh, 22px);
+  }
+}
