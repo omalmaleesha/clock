@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
@@ -10,14 +11,21 @@ html, body {
   overflow: hidden;
   background: #000;
   font-family: Arial, Helvetica, sans-serif;
+  height: 100dvh;
+  height: -webkit-fill-available;
 }
 
 body {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   touch-action: none;
+  overscroll-behavior: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #trailCanvas {
@@ -36,15 +44,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.15em;
+  gap: 0.2em;
 }
 
 .am-pm {
   color: #c8c8c8;
-  font-size: clamp(14px, 3.5vw, 28px);
+  font-size: clamp(18px, 4.5vw, 36px);
   font-weight: 600;
   letter-spacing: 0.08em;
-  margin-left: 0.15em;
+  margin-left: 0.2em;
   opacity: 0.9;
   text-shadow: 0 0 8px rgba(200, 200, 200, 0.35);
 }
@@ -52,14 +60,13 @@ body {
 .clock {
   display: flex;
   align-items: center;
-  gap: 0.18em;
-  --digit-w: clamp(42px, 14vw, 110px);
+  gap: 0.2em;
+  /* BIGGER digits */
+  --digit-w: clamp(70px, 20vw, 160px);
   --digit-h: calc(var(--digit-w) * 1.7);
   --seg: calc(var(--digit-w) * 0.18);
-  --gap: calc(var(--digit-w) * 0.06);
 }
 
-/* ========== 7-SEGMENT DIGIT ========== */
 .digit {
   position: relative;
   width: var(--digit-w);
@@ -82,7 +89,6 @@ body {
     0 0 12px rgba(220, 220, 220, 0.35);
 }
 
-/* Horizontal segments (a, g, d) */
 .seg.a, .seg.g, .seg.d {
   height: var(--seg);
   width: calc(100% - var(--seg) * 1.4);
@@ -93,33 +99,16 @@ body {
 .seg.g { top: 50%; transform: translateY(-50%); }
 .seg.d { bottom: 0; }
 
-/* Vertical segments */
 .seg.b, .seg.c, .seg.e, .seg.f {
   width: var(--seg);
   height: calc(50% - var(--seg) * 0.85);
 }
 
-.seg.b {
-  top: calc(var(--seg) * 0.55);
-  right: 0;
-}
+.seg.b { top: calc(var(--seg) * 0.55); right: 0; }
+.seg.c { bottom: calc(var(--seg) * 0.55); right: 0; }
+.seg.e { bottom: calc(var(--seg) * 0.55); left: 0; }
+.seg.f { top: calc(var(--seg) * 0.55); left: 0; }
 
-.seg.c {
-  bottom: calc(var(--seg) * 0.55);
-  right: 0;
-}
-
-.seg.e {
-  bottom: calc(var(--seg) * 0.55);
-  left: 0;
-}
-
-.seg.f {
-  top: calc(var(--seg) * 0.55);
-  left: 0;
-}
-
-/* Slight bevel for realistic 7-segment look */
 .seg.a, .seg.g, .seg.d {
   clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
 }
@@ -128,7 +117,6 @@ body {
   clip-path: polygon(50% 0%, 100% 8%, 100% 92%, 50% 100%, 0% 92%, 0% 8%);
 }
 
-/* ========== COLON ========== */
 .colon {
   display: flex;
   flex-direction: column;
@@ -150,25 +138,24 @@ body {
     0 0 10px rgba(220, 220, 220, 0.3);
 }
 
-/* ========== Landscape button ========== */
 .landscape-btn {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 44px;
-  height: 44px;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  right: max(16px, env(safe-area-inset-right));
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(30, 30, 30, 0.85);
+  background: rgba(30, 30, 30, 0.9);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 200;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
   backdrop-filter: blur(6px);
-  -webkit-tap-highlight-color: transparent;
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .landscape-btn:hover,
@@ -182,15 +169,20 @@ body {
 }
 
 body.landscape-mode .landscape-btn {
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
-/* Mobile landscape sizing */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) {
   .clock {
-    --digit-w: clamp(50px, 16vh, 100px);
+    --digit-w: clamp(90px, 18vh, 180px);
   }
   .am-pm {
-    font-size: clamp(12px, 4vh, 22px);
+    font-size: clamp(16px, 5vh, 32px);
+  }
+}
+
+@media (orientation: landscape) and (min-width: 700px) {
+  .clock {
+    --digit-w: clamp(100px, 15vw, 200px);
   }
 }
