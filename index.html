@@ -2,18 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#000000">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Digital Clock</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="theme-dark">
   <canvas id="trailCanvas"></canvas>
 
   <div class="clock-wrapper">
+    <div class="location" id="location">Detecting location...</div>
     <div class="am-pm" id="ampm">AM</div>
     <div class="clock">
       <div class="digit" id="h1"></div>
@@ -24,15 +21,29 @@
       </div>
       <div class="digit" id="m1"></div>
       <div class="digit" id="m2"></div>
+      <div class="colon">
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="digit" id="s1"></div>
+      <div class="digit" id="s2"></div>
     </div>
   </div>
 
-  <button id="landscapeBtn" class="landscape-btn" title="Fullscreen / Landscape">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="2" y="5" width="20" height="14" rx="2"/>
-      <path d="M8 19v2M16 19v2"/>
-    </svg>
-  </button>
+  <div class="controls">
+    <button id="themeBtn" class="control-btn" title="Change theme">
+      <svg id="themeIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
+    <button id="landscapeBtn" class="control-btn" title="Toggle landscape mode">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <path d="M8 19v2M16 19v2"/>
+      </svg>
+    </button>
+  </div>
 
   <script src="script.js"></script>
 </body>
